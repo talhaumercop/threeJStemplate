@@ -7,6 +7,7 @@ import * as THREE from 'three'
 import Resources from "./Utils/resources.class"
 import sources from "./sources"
 import debug from "./Utils/debug.class"
+import ShaderMaterial from "./world/ShaderMaterial.class"
 
 
 export default class Experience {
@@ -26,8 +27,8 @@ export default class Experience {
         this.camera = new Camera()
         this.renderer = new Renderer()
         this.resources = new Resources(sources)
-        this.cube = new Cube()
-
+        // this.cube = new Cube()
+        this.shaderMaterial= new ShaderMaterial()
         //listen triggers
         this.sizes.on('resize', () => {
             this.resize()

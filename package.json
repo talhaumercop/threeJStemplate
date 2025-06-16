@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-glsl": "^1.1.2"
   },
   "dependencies": {
     "dat.gui": "^0.7.9",
