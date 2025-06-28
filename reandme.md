@@ -98,8 +98,10 @@ float edgeGlow = 1.0 - dot(vNormal, viewDir);
 ### 🧪 Fragment Shader:
 
 ```glsl
+//normalie the normal again
+vec3 normal= normalize(vNormal);
 vec3 distance = normalize(vPosition - cameraPosition); // Vector from camera to pixel
-float fresnel = dot(vNormal, distance);               // Angle between view & normal
+float fresnel = dot(normal, distance);               // Angle between view & normal
 fresnel += 1.0;  // Shift range to avoid negative values
 ```
 
