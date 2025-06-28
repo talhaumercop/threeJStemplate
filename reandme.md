@@ -98,10 +98,8 @@ float edgeGlow = 1.0 - dot(vNormal, viewDir);
 ### 🧪 Fragment Shader:
 
 ```glsl
-//normalie the normal again
-vec3 normal= normalize(vNormal);
 vec3 distance = normalize(vPosition - cameraPosition); // Vector from camera to pixel
-float fresnel = dot(normal, distance);               // Angle between view & normal
+float fresnel = dot(vNormal, distance);               // Angle between view & normal
 fresnel += 1.0;  // Shift range to avoid negative values
 ```
 
@@ -117,6 +115,31 @@ vPosition = modelPosition.xyz;                      // Also pass vertex world po
 
 * Highlights the edges of objects based on angle to camera
 * Brighter on grazing angles — perfect for rim light/glow effects
+
+---
+
+### 🟢 `gl_FrontFacing` (Fragment Shader)
+
+**Purpose:** Tells whether the current fragment belongs to the front side of the geometry.
+
+📌 **Use Case:** You can use this to render front and back faces differently.
+
+```glsl
+if (gl_FrontFacing) {
+  color = vec3(1.0, 1.0, 1.0); // Front side — white
+} else {
+  color = vec3(1.0, 0.0, 0.0); // Back side — red
+}
+```
+
+**Type:** `bool`
+
+**Visual Hint:**
+
+```
+Front Side ➜ true
+Back Side  ➜ false
+```
 
 ---
 
