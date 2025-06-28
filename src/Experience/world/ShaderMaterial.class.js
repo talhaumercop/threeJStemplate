@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import fragmentShader from '../../Experience/shaders/fragment.glsl'
 import vertexShader from '../../Experience/shaders/vertex.glsl'
+import enviroment from './enviroment.class'
 
 console.log(vertexShader,fragmentShader)
 export default class ShaderMaterial {
@@ -12,7 +13,14 @@ export default class ShaderMaterial {
         this.ShaderMaterial()
     }
     ShaderMaterial() {
-        const geometry = new THREE.PlaneGeometry(2,2,128,128)
+        const geometry = new THREE.TorusKnotGeometry(
+            0.5, // radius
+            0.2, // tube
+            100, // radial segments
+            16, // tubular segments
+            2, // p
+            3 // q
+            )
         const material = new THREE.ShaderMaterial({
             vertexShader:vertexShader,
             fragmentShader:fragmentShader,

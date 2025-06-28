@@ -28,7 +28,7 @@ export default class enviroment {
         // Create PMREMGenerator
         const texture = this.resources.items.eviromentTextureMap
         texture.mapping = THREE.EquirectangularReflectionMapping;
-        // this.scene.background = texture;
+        //this.scene.background = texture;
         this.scene.environment = texture;
         this.scene.environment = texture;
 

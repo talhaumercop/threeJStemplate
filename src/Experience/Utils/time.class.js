@@ -1,5 +1,5 @@
 import EventEmitter from "./eventEmitter.class";
-
+import * as THREE from 'three';
 export default class Time extends EventEmitter {
     constructor() {
         super()
@@ -16,9 +16,10 @@ export default class Time extends EventEmitter {
     }
     tick() {
         const currentTime = Date.now()
+        const clock= new THREE.Clock();
         this.delta = currentTime - this.current
         this.current = currentTime
-        this.elapsedTime = this.current - this.start
+        this.elapsedTime = clock.getElapsedTime()
         this.trigger('tick')
 
         window.requestAnimationFrame(() => {

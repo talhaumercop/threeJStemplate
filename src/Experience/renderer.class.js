@@ -18,6 +18,8 @@ export default class Renderer {
         this.renderer.physicallyCorrectLights = true
         this.renderer.setSize(this.sizes.width, this.sizes.height)
         this.renderer.setPixelRatio(this.sizes.pixalRatio)
+        //set background color
+        this.renderer.setClearColor('#0E1117')
         this.renderer.outputEncoding = THREE.sRGBEncoding
         this.renderer.toneMapping = THREE.CineonToneMapping
         this.renderer.shadowMap.enabled = true
