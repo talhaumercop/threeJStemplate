@@ -93,6 +93,41 @@ float edgeGlow = 1.0 - dot(vNormal, viewDir);
 
 ---
 
+### 🟢 `smoothstep(edge0, edge1, x)`
+
+**Purpose:** Interpolates smoothly between 0 and 1 as `x` moves from `edge0` to `edge1`.
+
+📌 **Use Case:** For soft transitions, masking, blending effects.
+
+```glsl
+smoothstep(0.3, 0.8, value)  // 0 before 0.3, 1 after 0.8, smooth in-between
+```
+
+**Visual:**
+
+```
+Input:   0 --- 0.3 ~~~ 0.8 --- 1
+Output:  0 --- 0   ~~~  1 --- 1
+                  (smooth blend)
+```
+
+## 🟠 `fract(x)`
+
+**Purpose:** Returns only the decimal (fractional) part of a number. Always gives a **positive result** between `0.0` and `1.0`.
+
+📌 **Use Case:** Useful in generating **repeating patterns** without negatives — e.g., UV wrapping, tile maps, or animation loops.
+
+```glsl
+fract(0.8)   ➜ 0.8
+fract(-0.8)  ➜ 0.2
+fract(x) = x - floor(x)
+
+So:
+fract(0.8)   = 0.8 - 0   = 0.8
+fract(-0.8)  = -0.8 - (-1) = 0.2
+```
+---
+
 ## ✨ Fresnel Effect Example
 
 ### 🧪 Fragment Shader:
