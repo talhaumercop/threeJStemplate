@@ -41,6 +41,17 @@ export default class Resources extends EventEmitter {
                     }
                 )
             }
+            else if (source.type === 'texture') {
+                this.loaders.textureLoader.load(
+                    source.path,
+                    (texture) => {
+                        this.sourceLoaded(source, texture)
+                    }
+                )
+            }
+            else {
+                console.log('source type not found', source.type)
+            }
         }
     }
     sourceLoaded(source,file){

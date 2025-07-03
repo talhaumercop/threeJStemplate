@@ -8,6 +8,7 @@ import Resources from "./Utils/resources.class"
 import sources from "./sources"
 import debug from "./Utils/debug.class"
 import ShaderMaterial from "./world/ShaderMaterial.class"
+import FPSTracker from "./Utils/stats.class"
 
 
 export default class Experience {
@@ -21,6 +22,7 @@ export default class Experience {
 
         //setup
         this.debug=new debug()
+        this.stats=new FPSTracker()
         this.sizes = new Sizes()
         this.time = new Time()
         this.scene = new THREE.Scene()
@@ -42,7 +44,9 @@ export default class Experience {
         this.renderer.resize()
     }
     update() {
+        this.stats.begin()
         this.camera.update()
         this.renderer.render()
+        this.stats.end()
     }
 }

@@ -93,41 +93,6 @@ float edgeGlow = 1.0 - dot(vNormal, viewDir);
 
 ---
 
-### 🟢 `smoothstep(edge0, edge1, x)`
-
-**Purpose:** Interpolates smoothly between 0 and 1 as `x` moves from `edge0` to `edge1`.
-
-📌 **Use Case:** For soft transitions, masking, blending effects.
-
-```glsl
-smoothstep(0.3, 0.8, value)  // 0 before 0.3, 1 after 0.8, smooth in-between
-```
-
-**Visual:**
-
-```
-Input:   0 --- 0.3 ~~~ 0.8 --- 1
-Output:  0 --- 0   ~~~  1 --- 1
-                  (smooth blend)
-```
-
-## 🟠 `fract(x)`
-
-**Purpose:** Returns only the decimal (fractional) part of a number. Always gives a **positive result** between `0.0` and `1.0`.
-
-📌 **Use Case:** Useful in generating **repeating patterns** without negatives — e.g., UV wrapping, tile maps, or animation loops.
-
-```glsl
-fract(0.8)   ➜ 0.8
-fract(-0.8)  ➜ 0.2
-fract(x) = x - floor(x)
-
-So:
-fract(0.8)   = 0.8 - 0   = 0.8
-fract(-0.8)  = -0.8 - (-1) = 0.2
-```
----
-
 ## ✨ Fresnel Effect Example
 
 ### 🧪 Fragment Shader:
@@ -153,27 +118,121 @@ vPosition = modelPosition.xyz;                      // Also pass vertex world po
 
 ---
 
-### 🟢 `gl_FrontFacing` (Fragment Shader)
+## 🟢 `gl_FrontFacing` in Fragment Shader
 
-**Purpose:** Tells whether the current fragment belongs to the front side of the geometry.
+**Purpose:** Boolean indicating if the current fragment is from the front-facing side of a triangle.
 
-📌 **Use Case:** You can use this to render front and back faces differently.
+📌 **Use Case:**
+
+* Render different effects for front and back faces (e.g., x-ray shaders, stylized shading).
 
 ```glsl
-if (gl_FrontFacing) {
-  color = vec3(1.0, 1.0, 1.0); // Front side — white
-} else {
-  color = vec3(1.0, 0.0, 0.0); // Back side — red
+if (!gl_FrontFacing) discard; // Only render front-facing fragments
+```
+
+---
+
+## 🟠 `fract(x)`
+
+**Purpose:** Returns only the decimal (fractional) part of a number. Always gives a **positive result** between `0.0` and `1.0`.
+
+📌 **Use Case:** Useful in generating **repeating patterns** without negatives — e.g., UV wrapping, tile maps, or animation loops.
+
+```glsl
+fract(0.8)   ➜ 0.8
+fract(-0.8)  ➜ 0.2
+```
+
+**Visual Explanation:**
+
+```
+fract(x) = x - floor(x)
+
+So:
+fract(0.8)   = 0.8 - 0   = 0.8
+fract(-0.8)  = -0.8 - (-1) = 0.2
+```
+
+---
+
+## 🧵 `smoothstep(edge0, edge1, x)`
+
+**Purpose:** Smooth transition from 0.0 to 1.0 between two edges.
+
+📌 **Use Case:** Anti-aliased edges, gradient masks, smoother shapes.
+
+```glsl
+smoothstep(0.3, 0.8, value)
+```
+
+**Visual:**
+
+```
+Input value < 0.3     ➜ Output 0.0
+Input value > 0.8     ➜ Output 1.0
+Between 0.3 - 0.8     ➜ Smooth curve
+```
+
+---
+
+## ✳️ Points Size in Vertex Shader
+
+Add this line at the **end of the vertex shader** to control size of points:
+
+```glsl
+gl_PointSize = 1.0; // Set point size for rendering
+gl_PointSize *= (1.0 / -viewPosition.z); // Adjust size based on distance from camera
+```
+
+---
+
+## ✳️ Points Geometry Setup in Three.js
+
+```js
+const positionArray = new Float32Array(count * 3)
+for (let i = 0; i < count; i++) {
+    let i3 = i * 3
+    positionArray[i3] = Math.random() - 0.5
+    positionArray[i3 + 1] = Math.random() - 0.5
+    positionArray[i3 + 2] = Math.random() - 0.5
 }
+
+const geometry = new THREE.BufferGeometry()
+geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionArray, 3))
+
+const material = new THREE.PointsMaterial({
+    size: 0.1,
+    color: 0xff0000,
+    transparent: true,
+    blending: THREE.AdditiveBlending
+})
+
+this.firework = new THREE.Points(geometry, material)
+this.firework.position.set(0, 0, 0)
+this.firework.scale.set(10, 10, 10)
+this.scene.add(this.firework)
 ```
 
-**Type:** `bool`
+---
 
-**Visual Hint:**
+## ✳️ UV in Points Shader
 
+When using `gl.POINTS`, there is **no UV attribute**. Instead, use:
+
+```glsl
+gl_PointCoord
 ```
-Front Side ➜ true
-Back Side  ➜ false
+
+This gives a `vec2` inside each point (0.0 to 1.0 range).
+
+---
+
+## ✳️ Fixing Texture Flip for Points
+
+Sometimes textures appear flipped. Fix it with:
+
+```js
+texture.flipY = false // Flip the texture vertically if needed
 ```
 
 ---
