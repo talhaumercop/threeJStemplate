@@ -1,6 +1,21 @@
 ## 🎨 Shader Math Cheatsheet (Visual + Explained)
 
 ---
+### `vec3 position`
+It is the position of the vertices of a 3D model.  
+It is on the **local space** of the model — meaning if the model rotates, these positions also rotate.  
+📌 Use this when you want to work directly on the geometry/vertices of the model.
+
+---
+
+### `vec3 modelPosition`
+It is the position of the model in the **world space** (i.e., scene).  
+This doesn't change with the model’s rotation — it's been transformed using `modelMatrix`.
+
+---
+
+## 📌 `NOTE`
+*`You can pass both of these from the vertex shader to the fragment shader to better visualize or compute world-space effects.`*
 
 ### 🟡 `normalize(vec3)`
 
@@ -61,6 +76,46 @@ Stripe effect:
 ```
 
 ---
+### 🟤 `clamp(value,rangeX,rangeY)`
+
+**Purpose:** Clamps a value between two ranges.
+
+📌 **Use Case:**
+
+* Limit values to a specific range (e.g., 0-1 for UVs)
+* Create smooth transitions between ranges
+
+```glsl
+clamp(uv.x * 10.0, 0.0, 1.0)  // Clamps to 0-1 range
+```
+
+**Visual:**
+
+```
+Input:  0 --- 1 --- 2 --- 3 --- 4
+
+Output: 0 --- 0 --- 0 --- 1 --- 1
+```
+
+### 🟠 `min(a,b)`
+
+**Purpose:** Returns the smaller of two values.
+
+📌 **Use Case:**
+
+* Create a **ramp** from `0.0` to `1.0` based on a comparison.
+
+```glsl
+min(uv.x * 10.0, 1.0)  // Ramp from 0-10 to 0-1
+```
+
+**Visual:**
+
+```
+Input:  0 --- 1 --- 2 --- 3 --- 4
+
+Output: 0 --- 0 --- 0 --- 1 --- 1
+```
 
 ### 🔴 `dot(vecA, vecB)`
 
@@ -184,6 +239,46 @@ gl_PointSize = 1.0; // Set point size for rendering
 gl_PointSize *= (1.0 / -viewPosition.z); // Adjust size based on distance from camera
 ```
 
+---
+## ✳️ `remap function`
+ Remaps a value from one numeric range to another
+ 
+  @param value - Input value to be remapped
+  @param origin - [UNUSED] Original reference point (currently redundant)
+  @param originMax - Maximum value of input range
+  @param originMin - Minimum value of input range
+  @param destinationMin - Minimum value of output range
+  @param destinationMax - Maximum value of output range
+  @returns Value mapped to new range preserving proportional position
+```glsl
+float remap(float value, float originMin, float originMax, float destinationMin, float destinationMax)
+{
+    return destinationMin + (value - originMin) * (destinationMax - destinationMin) / (originMax - originMin);
+}
+
+```
+##  `clamp()`
+Clamps a value between a minimum and maximum value.
+
+📌 **Use Case:** Ensures a value stays within a specified range.
+
+```glsl
+float value = clamp(value, 0.0, 1.0); // Clamp value between 0 and 1
+```
+
+**Visual Explanation:**
+
+```
+If value < 0.0   ➜ Output 0.0
+If value > 1.0   ➜ Output 1.0
+Between 0.0 - 1.0 ➜ Output value
+```
+
+## Reverse of Pow()
+if you want to get inverse result of power you can do this trick:
+```glsl
+result=1.0-pow(1.0-value,1.0);
+```
 ---
 
 ## ✳️ Points Geometry Setup in Three.js
