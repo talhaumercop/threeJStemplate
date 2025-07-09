@@ -1,5 +1,6 @@
 varying vec3 vNormal;
 varying vec3 vPosition;
+varying vec2 vUv;
 
 #include "./utils/light/directional.glsl"
 #include "./utils/light/ambient.glsl"
@@ -25,8 +26,7 @@ void main()
     );
     vec3 color=vec3(1.0);
     color*=light;
-    gl_FragColor = vec4(color, 1.0);
-    gl_FragColor = vec4(color, 1.0);
+    gl_FragColor = vec4(vUv,1.0, 1.0);
     #include <tonemapping_fragment>
-   // #include <colorspace_fragment>
+    #include <colorspace_fragment>
 }
