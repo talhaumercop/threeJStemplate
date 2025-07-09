@@ -35,7 +35,26 @@ After:   -->         (Same direction, shorter size)
 ```
 
 ---
+### 🛣️`distance(value,range)`
 
+**Purpose:** Calculates the distance between a value and a range.  
+Returns a **float from 0 to 1**.
+
+**Example:**
+
+```glsl
+float distance = distance(uv, vec3(0.5));
+```
+
+**Visual:**
+
+```
+Input:   0 - - - - - 1
+Output:  0 --- 1 --- 0
+```
+
+
+---
 ### 🔵 `pow(x, y)`
 
 **Purpose:** Raises x to the power of y. Warps your gradients or curves.
@@ -186,6 +205,65 @@ if (!gl_FrontFacing) discard; // Only render front-facing fragments
 ```
 
 ---
+### `gl_FragCoord`
+
+**Purpose:** Represents the fragment's position in the window.
+
+📌 **Use Case:**
+* Whenever you like to draw something on the screen.
+* Accessing pixel coordinates for custom effects.
+* Positioning elements in a shader.
+
+```glsl
+vec2 uv = gl_FragCoord.xy / uResolution; // Normalized UV coordinates
+```
+
+---
+
+## `dot product of normal and a direction`
+
+**Purpose:** Calculates the cosine of the angle between two vectors.
+
+📌 **Use Case:**
+* Can be used to draw some pixals or animation differently according to the value(1,0,-1)
+* Determines if a surface is facing a certain direction.
+* Used in lighting models for shading and reflection.
+
+```glsl
+float dotProduct = dot(normal, direction);
+```
+
+**Visual Explanation:**
+
+```
+If dotProduct > 0 ➜ Surface is facing direction
+If dotProduct = 0 ➜ Surface is perpendicular to direction
+If dotProduct < 0 ➜ Surface is facing away from direction
+```
+
+---
+### `🕶️halfton function`
+```glsl
+vec3 halftone(
+    vec3 color,
+    float repititions,
+    vec3 direction,
+    float low,
+    float high,
+    vec3 pointColor,
+    vec3 normal
+)
+{
+    //float intensity
+    float intensity=dot(normal,direction);
+    intensity=smoothstep(low,high,intensity);
+    vec2 uv=mod((gl_FragCoord.xy/uResolution.y)*repititions,1.0);
+    float point=distance(uv,vec2(0.5));
+    point=1.0-step(point,0.5*intensity);
+
+    return mix(pointColor,color,point);
+}
+```
 
 ## 🟠 `fract(x)`
 
@@ -344,6 +422,10 @@ in fragment.glsl inlcude the light liek directional light and do this:
         vec3(-1.0,0.5,0.0),//position
         viewDirection,       //view Direction
         30.0  //specular power (refwcn)
+    );
+     light+=ambientLight(
+        vec3(0.0),//color
+        1.0 //intensity
     );
     light += pointLight(
         vec3(1.0),  //color
