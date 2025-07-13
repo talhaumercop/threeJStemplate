@@ -446,6 +446,24 @@ varyings you have to do in vertex shaders:
     vNormal=(modelMatrix*vec4(normal,0.0)).xyz;
     vPosition=modelPosition.xyz;
     ```
+
+### `🔵specular Function to calculat or put the refelction over the object`:
+```glsl
+float specularReflection(
+    vec3 LightDirection,// the direction in which the light is 
+    vec3 viewDirection, // calculated in fragment
+    vec3 normal //normalss
+    )
+{
+    vec3 reflection=reflect(-LightDirection,normal);
+    float specular=-dot(reflection,viewDirection);
+    specular=max(specular,0.0);
+    specular=pow(specular,30.0);
+
+    return specular;
+}
+```
+
 ### cross(vecA,vecB):
 cross product is a vector that is perpendicular to the plane that the two input vectors a and b span.
 image:
@@ -471,6 +489,12 @@ vec3 computeNormals=cross(toA,toB);
 modelPositionA.y+=elevationFunction(modelPositionA);
 modelPositionB.y+=elevationFunction(modelPositionB);
 
+```
+
+## `anistropy`
+you can improve a texture by increasing anisotrpy 
+``` js
+earthDay.anisotropy=8
 ```
 ---
 
