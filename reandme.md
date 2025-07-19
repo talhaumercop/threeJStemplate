@@ -508,6 +508,28 @@ earthDay.anisotropy=8
         discard;
     }
 ```
+
+### canvas:
+js file uniform:
+```js
+uDisplacementTexture:{value:this.canvas.displacement.texture},
+```
+in vertex retrieve this uniform:
+```glsl
+uniform sampler2D uDisplacementTexture;
+    //in main function
+    vec3 newPosition=position;
+    float Displacement_Intensity=texture(uDisplacementTexture,uv).r;
+    Displacement_Intensity=smoothstep(0.1,0.3,Displacement_Intensity);
+    vec3 displacement_direction=vec3(cos(aAngle),sin(aAngle),1.0);
+    displacement_direction=normalize(displacement_direction);
+    displacement_direction*=Displacement_Intensity;
+    displacement_direction*=0.3;
+    displacement_direction*=aIntensity;
+    newPosition+=(displacement_direction);
+    vec4 modelPosition = modelMatrix * vec4(newPosition, 1.0);
+```
+
 ---
 
 ✨ Keep this cheat sheet open while working with GLSL / TSL shaders to understand how values move, repeat, and interact in space.
