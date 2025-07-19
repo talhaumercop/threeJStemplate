@@ -22,11 +22,11 @@ void main()
     );
      light+=ambientLight(
         vec3(0.7333, 0.702, 0.702),//color
-        1.0 //intensity
+        0.3 //intensity
     );
     vec3 color=vec3(1.0);
     color*=light;
-    gl_FragColor = vec4(vUv,1.0, 1.0);
+    gl_FragColor = vec4(color, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
 }
