@@ -9,6 +9,7 @@ import sources from "./sources"
 import debug from "./Utils/debug.class"
 import ShaderMaterial from "./world/ShaderMaterial.class"
 import FPSTracker from "./Utils/stats.class"
+import canvas2D from "./world/utils/canvas.class"
 
 
 export default class Experience {
@@ -30,7 +31,9 @@ export default class Experience {
         this.renderer = new Renderer()
         this.resources = new Resources(sources)
         // this.cube = new Cube()
+        this.canvasClass=new canvas2D()
         this.shaderMaterial= new ShaderMaterial()
+        
         //listen triggers
         this.sizes.on('resize', () => {
             this.resize()
@@ -47,6 +50,7 @@ export default class Experience {
         this.stats.begin()
         this.camera.update()
         this.renderer.render()
+        this.canvasClass.update()
         this.stats.end()
     }
 }

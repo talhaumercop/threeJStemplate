@@ -1,11 +1,12 @@
 body{
   margin: 0;
   padding: 0;
-  
-  background: #000;
+  background: #922f2f;
   overflow: hidden;
 }
 canvas{
+  /* gradient background */
+  background: linear-gradient(45deg, #000000, #0f8fda, #bd5276);
   width: 100%;
   height: 100vh;
   position:absolute ;

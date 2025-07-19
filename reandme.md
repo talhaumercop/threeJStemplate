@@ -496,6 +496,18 @@ you can improve a texture by increasing anisotrpy
 ``` js
 earthDay.anisotropy=8
 ```
+
+
+### `discard`:
+# can have a performance impact
+   ```glsl
+    vec2 uv=gl_PointCoord;
+    float distanceTOcenter=distance(uv,vec2(0.5,0.5));
+    distanceTOcenter=1.0-step(0.5,distanceTOcenter);
+    if(distanceTOcenter<0.5){
+        discard;
+    }
+```
 ---
 
 ✨ Keep this cheat sheet open while working with GLSL / TSL shaders to understand how values move, repeat, and interact in space.

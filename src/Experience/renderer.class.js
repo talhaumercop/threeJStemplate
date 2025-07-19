@@ -13,13 +13,14 @@ export default class Renderer {
     webGLRenderer() {
         this.renderer = new THREE.WebGLRenderer({
             canvas: this.canvas,
-            antialias: true
+            antialias: true,
+            alpha:true
         })
         this.renderer.physicallyCorrectLights = true
         this.renderer.setSize(this.sizes.width, this.sizes.height)
         this.renderer.setPixelRatio(this.sizes.pixalRatio)
         //set background color
-        this.renderer.setClearColor('#0E1117')
+      //  this.renderer.setClearColor(null) // Will just leave it transparent
         this.renderer.outputEncoding = THREE.sRGBEncoding
         this.renderer.toneMapping = THREE.CineonToneMapping
         this.renderer.shadowMap.enabled = true
