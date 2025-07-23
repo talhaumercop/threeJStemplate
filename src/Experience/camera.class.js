@@ -32,7 +32,7 @@ export default class Camera {
         this.controls.dampingFactor = 0.05
         this.controls.screenSpacePanning = true
         this.controls.enableZoom = true
-        this.controls.minDistance = 2
+        this.controls.minDistance = 0.1
         this.controls.maxDistance = 10
 
         // Update controls immediately

@@ -530,6 +530,32 @@ uniform sampler2D uDisplacementTexture;
     vec4 modelPosition = modelMatrix * vec4(newPosition, 1.0);
 ```
 
+### To create bright Particales:
+```glsl
+    vec2 uv_Point=gl_PointCoord;
+    float distanceTOcenter=distance(uv_Point,vec2(0.5));
+    float alpha=0.05/distanceTOcenter-0.1;
+    gl_FragColor = vec4(vec3(1.0), alpha);
+```
+```js       geometry.setIndex(null)
+            blending:THREE.AdditiveBlending,
+            depthTest:false,
+            depthWrite:false 
+```
+### `simplex noise`
+it ranges from -1 to +1
+so:
+```glsl
+float noise=snoise(newPosition);
+noise=smoothstep(-1.0,1.0,noise);
+```
+### gui:
+```js
+ this.debug=this.experience.debug
+        if(this.debug.active){
+            this.debugFolder = this.debug.ui.addFolder("particals-Morphs")
+        }
+```
 ---
 
 ✨ Keep this cheat sheet open while working with GLSL / TSL shaders to understand how values move, repeat, and interact in space.
