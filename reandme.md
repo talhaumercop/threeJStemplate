@@ -556,6 +556,77 @@ noise=smoothstep(-1.0,1.0,noise);
             this.debugFolder = this.debug.ui.addFolder("particals-Morphs")
         }
 ```
+
+### `having particales animation with different models`:
+inside the shader material:
+```js
+model(){
+        this.model=this.resources.items.Model.scene
+        this.positions=this.model.children.map(
+        (child)=>{
+           return child.geometry.attributes.position
+        })
+
+        // we extract the  max count throught the array of gltf position
+        this.maxCount=0
+        for(const position of this.positions){
+            // console.log(position.count)
+            if(position.count>this.maxCount){
+                this.maxCount=position.count
+            }
+        }
+        //now we will make the new Array of the max Count for each gltf position 
+        //we cannot update the existing float32array in position thats
+        //why we will create a new one
+        this.positionArray=[]
+        for(const position of this.positions)
+            {
+                const originalArray=position.array
+                const newArray=new Float32Array(this.maxCount*3)
+
+                for(let i=0;i<=this.maxCount;i++)
+                {
+                    const i3=i*3
+                    if(i3<originalArray.length)
+                    {
+                        newArray[i3]=originalArray[i3]
+                        newArray[i3+1]=originalArray[i3+1]
+                        newArray[i3+2]=originalArray[i3+2]
+                    }
+                    else
+                    {
+                        //all exceeded particals are randomly set 
+                        const randomIndex=Math.floor(Math.random()*originalArray.length)*3
+                        newArray[i3]=originalArray[randomIndex]
+                        newArray[i3+1]=originalArray[randomIndex+1]
+                        newArray[i3+2]=originalArray[randomIndex+2]
+                    }
+                }
+                //now push the newArray to position array we defind above
+                this.positionArray.push(new THREE.Float32BufferAttribute(newArray,3))
+            }
+            console.log(this.positionArray)
+
+        }
+```
+
+then for geometry:
+```js
+ const geometry = new THREE.BufferGeometry()
+        geometry.setAttribute('position',this.positionArray[1])
+        geometry.setAttribute('aPositionTarget',this.positionArray[3])
+
+```
+
+
+### gui
+```js 
+this.debug=this.experience.debug
+        if(this.debug.active){
+            this.debugFolder = this.debug.ui.addFolder("particals-Morphs")
+        }
+this.debugFolder.add(this.material.uniforms.uSize,'value',0.0,100.0)
+```
 ---
 
 ✨ Keep this cheat sheet open while working with GLSL / TSL shaders to understand how values move, repeat, and interact in space.
